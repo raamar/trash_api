@@ -52,7 +52,7 @@ export default [
   { id: 109, title: 'Лофт с кирпичной кладкой', category: 'Жилые интерьеры', images: [] },
   {
     id: 110,
-    title: 'Гостиница в центре',
+    title: 'Гостиница в центре.',
     images: [
       'https://picsum.photos/200/300?random=56678',
       'https://picsum.photos/200/300?random=123566',

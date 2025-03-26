@@ -1,6 +1,3 @@
-
-//@ts-nocheck
-
 import { Router, Request, Response } from 'express'
 import portfolio from '../data/portfolio'
 
@@ -9,6 +6,8 @@ const router = Router()
 router.get('/', (_: Request, res: Response) => {
   res.json(portfolio)
 })
+
+//@ts-expect-error
 router.get('/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id)
   const item = portfolio.find((item) => item.id === id)
@@ -18,6 +17,15 @@ router.get('/:id', (req: Request, res: Response) => {
   }
 
   res.json(item)
+})
+
+router.post('/', (_: Request, res: Response) => {
+  res.status(201).json({ id: Date.now(), response: 200 })
+})
+
+router.delete('/:id', (req: Request, res: Response) => {
+  const id = req.params.id
+  res.status(204).json({ id, response: 200 })
 })
 
 export default router

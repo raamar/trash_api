@@ -108,6 +108,72 @@
           }
         }
       }
+    },
+    "/services/{id}": {
+      "get": {
+        "summary": "Получить услугу по ID",
+        "tags": ["Services"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID услуги"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Объект услуги",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 2,
+                  "name": "3D-визуализация",
+                  "desc": "Фотореалистичная графика",
+                  "cost": 15000
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Услуга не найдена"
+          }
+        }
+      }
+    },
+    "/portfolio/{id}": {
+      "get": {
+        "summary": "Получить проект портфолио по ID",
+        "tags": ["Portfolio"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID проекта"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Объект портфолио",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 102,
+                  "title": "Офис стартапа",
+                  "type": "Офисные интерьеры",
+                  "imgs": "/images/portfolio/office.jpg"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проект не найден"
+          }
+        }
+      }
     }
   }
 }

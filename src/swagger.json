@@ -1,114 +1,11 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Mock API для тестирования UI/QA",
-    "version": "1.1.0",
-    "description": "Учебный mock API с намеренными ошибками и сложной структурой для тестирования фронтенда и ручного/авто QA."
+    "title": "Mock API",
+    "version": "1.2.0",
+    "description": "Тестовое API для тренировки тестирования и взаимодействия с типовыми REST-структурами. Используется для проверки навыков работы с API и документацией."
   },
-  "tags": [
-    { "name": "Site", "description": "Основная информация о сайте" },
-    { "name": "Services", "description": "Список предоставляемых услуг" },
-    { "name": "Portfolio", "description": "Проекты портфолио с изображениями" }
-  ],
   "paths": {
-    "/site-info": {
-      "get": {
-        "summary": "Получить общие данные сайта",
-        "tags": ["Site"],
-        "responses": {
-          "200": {
-            "description": "Объект с информацией о сайте",
-            "content": {
-              "application/json": {
-                "example": {
-                  "site_title": "Студия дизайна",
-                  "descr": "Мы делаем красивые вещи.",
-                  "phone": "+7 999 123 45 67",
-                  "email": "info@design-studio.ru",
-                  "adress": {
-                    "city": "Москва",
-                    "street": "ул. Примерная",
-                    "house": "1",
-                    "postalCode": "123456"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/services": {
-      "get": {
-        "summary": "Получить список услуг",
-        "tags": ["Services"],
-        "responses": {
-          "200": {
-            "description": "Массив услуг с намеренными несоответствиями",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "id": 1,
-                    "name": "Дизайн интерьера",
-                    "description": "Создаем уникальные интерьеры.",
-                    "price": "от 5000 рублей"
-                  },
-                  {
-                    "id": 2,
-                    "name": "3D-визуализация",
-                    "desc": "Фотореалистичные изображения.",
-                    "cost": 7000
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "/portfolio": {
-      "get": {
-        "summary": "Получить список проектов портфолио",
-        "tags": ["Portfolio"],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Сколько проектов вернуть",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Массив объектов-проектов с изображениями",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "id": 101,
-                    "title": "Квартира в центре",
-                    "category": "Жилые интерьеры",
-                    "images": ["/images/portfolio/apt1.jpg", "/images/portfolio/apt2.jpg"],
-                    "main_image": "/images/portfolio/apt1.jpg"
-                  },
-                  {
-                    "id": 102,
-                    "title": "Офис IT-компании",
-                    "type": "Офисные интерьеры",
-                    "imgs": "/images/portfolio/office.jpg"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
     "/services/{id}": {
       "get": {
         "summary": "Получить услугу по ID",
@@ -118,7 +15,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer" },
+            "schema": {
+              "type": "integer"
+            },
             "description": "ID услуги"
           }
         ],
@@ -127,11 +26,8 @@
             "description": "Объект услуги",
             "content": {
               "application/json": {
-                "example": {
-                  "id": 2,
-                  "name": "3D-визуализация",
-                  "desc": "Фотореалистичная графика",
-                  "cost": 15000
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
                 }
               }
             }
@@ -151,7 +47,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer" },
+            "schema": {
+              "type": "integer"
+            },
             "description": "ID проекта"
           }
         ],
@@ -160,11 +58,8 @@
             "description": "Объект портфолио",
             "content": {
               "application/json": {
-                "example": {
-                  "id": 102,
-                  "title": "Офис стартапа",
-                  "type": "Офисные интерьеры",
-                  "imgs": "/images/portfolio/office.jpg"
+                "schema": {
+                  "$ref": "#/components/schemas/PortfolioItem"
                 }
               }
             }
@@ -173,6 +68,118 @@
             "description": "Проект не найден"
           }
         }
+      },
+      "delete": {
+        "summary": "Удалить элемент портфолио (фейковый)",
+        "tags": ["Portfolio"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID проекта"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Удалено (но ничего не произошло)"
+          },
+          "404": {
+            "description": "Проект не найден"
+          }
+        }
+      }
+    },
+    "/services": {
+      "post": {
+        "summary": "Создать новую услугу (с ошибками)",
+        "tags": ["Services"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "Новая услуга",
+                "desc": "Описание услуги",
+                "price": "10000р",
+                "duration_min": "60"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Service"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Услуга создана",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный формат запроса"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Service": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number"
+          },
+          "duration_min": {
+            "type": "integer"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "PortfolioItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "main_image": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "title"]
       }
     }
   }

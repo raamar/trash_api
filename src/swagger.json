@@ -1,0 +1,113 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Mock API для тестирования UI/QA",
+    "version": "1.1.0",
+    "description": "Учебный mock API с намеренными ошибками и сложной структурой для тестирования фронтенда и ручного/авто QA."
+  },
+  "tags": [
+    { "name": "Site", "description": "Основная информация о сайте" },
+    { "name": "Services", "description": "Список предоставляемых услуг" },
+    { "name": "Portfolio", "description": "Проекты портфолио с изображениями" }
+  ],
+  "paths": {
+    "/site-info": {
+      "get": {
+        "summary": "Получить общие данные сайта",
+        "tags": ["Site"],
+        "responses": {
+          "200": {
+            "description": "Объект с информацией о сайте",
+            "content": {
+              "application/json": {
+                "example": {
+                  "site_title": "Студия дизайна",
+                  "descr": "Мы делаем красивые вещи.",
+                  "phone": "+7 999 123 45 67",
+                  "email": "info@design-studio.ru",
+                  "adress": {
+                    "city": "Москва",
+                    "street": "ул. Примерная",
+                    "house": "1",
+                    "postalCode": "123456"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/services": {
+      "get": {
+        "summary": "Получить список услуг",
+        "tags": ["Services"],
+        "responses": {
+          "200": {
+            "description": "Массив услуг с намеренными несоответствиями",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Дизайн интерьера",
+                    "description": "Создаем уникальные интерьеры.",
+                    "price": "от 5000 рублей"
+                  },
+                  {
+                    "id": 2,
+                    "name": "3D-визуализация",
+                    "desc": "Фотореалистичные изображения.",
+                    "cost": 7000
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio": {
+      "get": {
+        "summary": "Получить список проектов портфолио",
+        "tags": ["Portfolio"],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Сколько проектов вернуть",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Массив объектов-проектов с изображениями",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 101,
+                    "title": "Квартира в центре",
+                    "category": "Жилые интерьеры",
+                    "images": ["/images/portfolio/apt1.jpg", "/images/portfolio/apt2.jpg"],
+                    "main_image": "/images/portfolio/apt1.jpg"
+                  },
+                  {
+                    "id": 102,
+                    "title": "Офис IT-компании",
+                    "type": "Офисные интерьеры",
+                    "imgs": "/images/portfolio/office.jpg"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
